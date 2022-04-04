@@ -1,0 +1,12 @@
+.array-container {
+    display: flex;
+    flex-direction: row;
+    width: 80vw;
+    margin: 0 auto;
+}
+
+.array-bar {
+    margin: 0 1px;
+    width: 3px;
+    background-color: #fc6666;
+}
