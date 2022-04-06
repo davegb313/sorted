@@ -17,23 +17,6 @@
     text-decoration: underline;
 }
 
-input {
-    visibility: hidden;
-}
-
-label {
-    text-decoration: underline;
-    padding: 8px 6px;
-    border-radius: 5px;
-    display: block;
-    align-self: center;
-    font-size: small;
-}
-
-input:checked + label {
-    background-color: #d4d4d4;
-}
-
 .btn:active, .btn:hover {
     background-color: #d4d4d4;
 }

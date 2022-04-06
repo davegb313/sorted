@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
+
 import logo from './logo.jpg';
+import { getMergeSortAnimations } from "./sortingAlgorithms";
 import './SortedVisualization.css';
+
+const ANIMATION_SPEED_MS = 5;
+const PRIMARY_COLOR = 'turquoise';
+const SECONDARY_COLOR = 'red';
 
 const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
@@ -23,6 +29,30 @@ const SortedVisualization = props => {
         setArray(newArray);
     };
 
+    const mergeSort = () => {
+        const animations = getMergeSortAnimations(array);
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            const isColorChange = i % 3 !== 2;
+            if (isColorChange) {
+                const [barOneIdx, barTwoIdx] = animations[i];
+                const barOneStyle = arrayBars[barOneIdx].style;
+                const barTwoStyle = arrayBars[barTwoIdx].style;
+                const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = color;
+                    barTwoStyle.backgroundColor = color;
+                }, i * ANIMATION_SPEED_MS);
+            } else {
+                setTimeout(() => {
+                    const [barOneIdx, newHeight] = animations[i];
+                    const barOneStyle = arrayBars[barOneIdx].style;
+                    barOneStyle.height = `${newHeight}px`;
+                }, i * ANIMATION_SPEED_MS);
+            }
+        }
+    }
+
     console.log('array:', numsInArray);
     return (
         <>
@@ -32,20 +62,16 @@ const SortedVisualization = props => {
                 <button className="btn" onClick={resetArray}>generate</button>
                 <div className="separator"></div>
 
-                <input onClick={resetArray} defaultChecked name="sort-algorithm" type='radio' id='merge' value='merge sort' />
-                <label for='merge'>merge sort</label>
+        <button className="btn" onClick={mergeSort} >merge sort</button>
+                
 
-                <input onClick={resetArray} name="sort-algorithm" type='radio' id='quick' value='quick sort' />
-                <label for='quick'>quick sort</label>
+        <button className="btn" onClick={resetArray} >quick sort</button>
+                
 
-                <input  onClick={resetArray} name="sort-algorithm" type='radio' id='heap' value='heap sort' />
-                <label for='heap'>bubble sort</label>
+        <button className="btn" onClick={resetArray} >heap sort</button>
+                
 
-                <input onClick={resetArray} name="sort-algorithm" id='bubble' type='radio' value='bubble sort' />
-                <label for='bubble'>bubble sort</label>
-
-                <div className="separator"></div>
-                <button className="btn" style={{ margin: '0 3rem 0 0'}} onClick={resetArray}>sort</button>
+        <button className="btn" onClick={resetArray} >bubble sort</button>
 
             </div>
             <div className="array-container">
