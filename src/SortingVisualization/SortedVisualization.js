@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 import logo from './logo.jpg';
-import { getMergeSortAnimations } from "./sortingAlgorithms";
+import { getMergeSortAnimations } from "./mergeSort";
+import { getQuickSortAnimations } from "./quickSort";
+import { bubbleSortHelper } from "./bubbleSort";
 import './SortedVisualization.css';
 
-const ANIMATION_SPEED_MS = 5;
-const PRIMARY_COLOR = 'turquoise';
+const ANIMATION_SPEED_MS = 3;
+const PRIMARY_COLOR = 'lightgray';
 const SECONDARY_COLOR = 'red';
 
 const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -15,7 +17,6 @@ const SortedVisualization = props => {
 
     useEffect(() => {
         resetArray();
-
     }, []);
 
     const numsInArray = Math.round(window.innerWidth / 500 * 80);
@@ -28,11 +29,12 @@ const SortedVisualization = props => {
         }
         setArray(newArray);
     };
-
+    
+    
     const mergeSort = () => {
         const animations = getMergeSortAnimations(array);
+        const arrayBars = document.getElementsByClassName('array-bar');
         for (let i = 0; i < animations.length; i++) {
-            const arrayBars = document.getElementsByClassName('array-bar');
             const isColorChange = i % 3 !== 2;
             if (isColorChange) {
                 const [barOneIdx, barTwoIdx] = animations[i];
@@ -53,7 +55,16 @@ const SortedVisualization = props => {
         }
     }
 
-    console.log('array:', numsInArray);
+    const quickSort = () => {
+        const arrayBars = document.getElementsByClassName('array-bar');
+        getQuickSortAnimations(array, arrayBars);
+    }
+
+    const bubbleSort = () => {
+        const arrayBars = document.getElementsByClassName('array-bar');
+        bubbleSortHelper(array, arrayBars);
+    }
+
     return (
         <>
             <div className="controls">
@@ -63,15 +74,9 @@ const SortedVisualization = props => {
                 <div className="separator"></div>
 
         <button className="btn" onClick={mergeSort} >merge sort</button>
-                
-
-        <button className="btn" onClick={resetArray} >quick sort</button>
-                
-
+        <button className="btn" onClick={quickSort} >quick sort</button>
         <button className="btn" onClick={resetArray} >heap sort</button>
-                
-
-        <button className="btn" onClick={resetArray} >bubble sort</button>
+        <button className="btn" onClick={bubbleSort} >bubble sort</button>
 
             </div>
             <div className="array-container">
